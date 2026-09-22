@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./dist/output.css" rel="stylesheet" />
+    <title>Todo List - Add New Task</title>
+  </head>
+  <body
+    class="bg-gray-50 h-screen w-screen overflow-hidden font-sans antialiased flex flex-col"
+  >
+    <!-- NAVBAR -->
+    <header class="w-full bg-white shadow-sm shrink-0 h-20 z-50">
+      <div
+        class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between"
+      >
+        <a href="home.html" class="text-2xl font-extrabold text-blue-600"
+          >Todo List</a
+        >
+        <nav class="flex items-center space-x-10 font-semibold text-gray-800">
+          <a href="home.html" class="hover:text-blue-600 transition-colors"
+            >Home</a
+          >
+          <a href="completed.html" class="hover:text-blue-600 transition-colors"
+            >Completed</a
+          >
+        </nav>
+        <div class="flex items-center space-x-5 text-gray-700">
+          <button class="hover:text-blue-600">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+              ></path>
+            </svg>
+          </button>
+          <button class="hover:text-blue-600">
+            <svg
+              class="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- FORM CONTAINER -->
+    <main
+      class="flex-1 max-w-7xl w-full mx-auto px-8 py-8 flex flex-col overflow-y-auto"
+    >
+      <a
+        href="home.html"
+        class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold text-sm mb-4 transition-colors"
+      >
+        <svg
+          class="w-4 h-4 mr-1.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          ></path>
+        </svg>
+        Back to Home
+      </a>
+
+      <div class="mb-6">
+        <h1 class="text-3xl font-extrabold text-gray-900">Add New Task</h1>
+        <p class="text-gray-400 text-sm mt-1">
+          Fill in the details to add a new task.
+        </p>
+      </div>
+
+      <!-- FORM INPUT DENGAN ID -->
+      <form id="taskForm" class="space-y-6 max-w-4xl">
+        <div>
+          <label class="block text-sm font-bold text-gray-800 mb-2"
+            >Task Name</label
+          >
+          <input
+            type="text"
+            id="taskName"
+            required
+            placeholder="Enter task name"
+            class="w-full bg-white border border-gray-300 rounded-lg p-3.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-gray-800 mb-2"
+            >Description</label
+          >
+          <textarea
+            id="taskDesc"
+            rows="4"
+            placeholder="Enter description"
+            class="w-full bg-white border border-gray-300 rounded-lg p-3.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm resize-none"
+          ></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-bold text-gray-800 mb-2"
+              >Priority</label
+            >
+            <div class="relative">
+              <select
+                id="taskPriority"
+                class="w-full bg-white border border-gray-300 rounded-lg p-3.5 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none transition-all shadow-sm"
+              >
+                <option value="" disabled selected>Select priority</option>
+                <option value="low" class="text-gray-700">Low</option>
+                <option value="medium" class="text-gray-700">Medium</option>
+                <option value="high" class="text-gray-700">High</option>
+              </select>
+              <div
+                class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-gray-400"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-gray-800 mb-2"
+              >Due Date</label
+            >
+            <input
+              type="date"
+              id="taskDate"
+              class="w-full bg-white border border-gray-300 rounded-lg p-3.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end space-x-4 pt-4">
+          <a
+            href="home.html"
+            class="px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-600 hover:bg-gray-100 transition-all"
+          >
+            Cancel
+          </a>
+          <button
+            type="submit"
+            class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md shadow-blue-500/30 transition-all transform hover:-translate-y-0.5"
+          >
+            Save Task
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <!-- SCRIPT UNTUK SIMPAN DATA KE LOCALSTORAGE & PINDAH HALAMAN -->
+    <script>
+      document
+        .getElementById("taskForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Mencegah form reload bawaan HTML
+
+          const name = document.getElementById("taskName").value;
+          const desc = document.getElementById("taskDesc").value;
+          const priority = document.getElementById("taskPriority").value;
+          let dateVal = document.getElementById("taskDate").value;
+
+          // Format tanggal (misal: "20 Aug 2026") agar mirip desainmu
+          let formattedDate = "Today";
+          if (dateVal) {
+            const d = new Date(dateVal);
+            const options = { day: "numeric", month: "short", year: "numeric" };
+            formattedDate = d.toLocaleDateString("en-GB", options);
+          }
+
+          // Ambil data task aktif lama dari localStorage (kalau ada)
+          let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+          // Tambah task baru ke array
+          tasks.push({
+            name: name,
+            description: desc,
+            priority: priority,
+            date: formattedDate,
+            completed: false,
+            bookmarked: false,
+          });
+
+          // Simpan kembali ke localStorage
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+
+          // Pindah otomatis ke halaman home
+          window.location.href = "home.html";
+        });
+    </script>
+  </body>
+</html>
