@@ -1,19 +1,41 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 const container = document.getElementById("taskListContainer");
 const emptyState = document.getElementById("emptyState");
+const searchInput = document.getElementById("searchInput");
+
+function getFilteredTasks() {
+  const keyword = (searchInput?.value || "").trim().toLowerCase();
+
+  if (!keyword) {
+    return tasks.filter((task) => !task.completed);
+  }
+
+  return tasks.filter(
+    (task) =>
+      !task.completed &&
+      (task.name || task.title || "Untitled Task")
+        .toLowerCase()
+        .includes(keyword),
+  );
+}
 
 function renderTasks() {
   container.innerHTML = "";
 
-  const activeTasks = tasks.filter((task) => !task.completed);
+  const filteredTasks = getFilteredTasks();
 
-  if (activeTasks.length === 0) {
-    container.appendChild(emptyState);
+  if (filteredTasks.length === 0) {
+    container.innerHTML = `
+      <p class="text-gray-400 font-medium text-lg tracking-wide">
+        No tasks found.
+      </p>
+    `;
     return;
   }
 
-  tasks.forEach((task, index) => {
-    if (task.completed) return;
+  filteredTasks.forEach((task, index) => {
+    const realIndex = tasks.findIndex((item) => item === task);
+    const safeIndex = realIndex !== -1 ? realIndex : index;
 
     const taskItem = document.createElement("div");
     taskItem.className =
@@ -31,9 +53,8 @@ function renderTasks() {
     taskName.textContent = task.name || task.title || "Untitled Task";
 
     taskName.addEventListener("click", () => {
-      // Mencari index asli task dalam array utama
       const originalIndex = tasks.findIndex((t) => t === task);
-      const targetIndex = originalIndex !== -1 ? originalIndex : index;
+      const targetIndex = originalIndex !== -1 ? originalIndex : safeIndex;
 
       localStorage.setItem("selectedTaskIndex", String(targetIndex));
       localStorage.setItem("selectedTask", JSON.stringify(task));
@@ -59,7 +80,7 @@ function renderTasks() {
           `;
 
     completeButton.addEventListener("click", () => {
-      tasks[index].completed = true;
+      tasks[safeIndex].completed = true;
       localStorage.setItem("tasks", JSON.stringify(tasks));
       renderTasks();
     });
@@ -77,7 +98,7 @@ function renderTasks() {
           `;
 
     bookmarkButton.addEventListener("click", () => {
-      tasks[index].bookmarked = !tasks[index].bookmarked;
+      tasks[safeIndex].bookmarked = !tasks[safeIndex].bookmarked;
       localStorage.setItem("tasks", JSON.stringify(tasks));
       renderTasks();
     });
@@ -94,7 +115,7 @@ function renderTasks() {
           `;
 
     deleteButton.addEventListener("click", () => {
-      tasks.splice(index, 1);
+      tasks.splice(safeIndex, 1);
       localStorage.setItem("tasks", JSON.stringify(tasks));
       renderTasks();
     });
@@ -106,4 +127,5 @@ function renderTasks() {
   });
 }
 
+searchInput?.addEventListener("input", renderTasks);
 renderTasks();

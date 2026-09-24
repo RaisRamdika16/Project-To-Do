@@ -15,9 +15,7 @@
         class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between"
       >
         <!-- Logo -->
-        <a class="text-2xl font-extrabold text-blue-600"
-          >Todo List</a
-        >
+        <a class="text-2xl font-extrabold text-blue-600">Todo List</a>
 
         <!-- Navigation Links (Home Aktif) -->
         <nav class="flex items-center space-x-10 font-semibold text-gray-800">
@@ -52,25 +50,6 @@
               ></path>
             </svg>
           </a>
-          <a
-            href="profil.html"
-            class="hover:text-blue-600"
-            aria-label="Profile"
-          >
-            <svg
-              class="w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-          </a>
         </div>
       </div>
     </header>
@@ -90,8 +69,10 @@
         <!-- Input Search dengan Ikon Kaca Pembesar -->
         <div class="relative flex-1">
           <input
+            id="searchInput"
             type="text"
-            placeholder="Search"
+            placeholder="Search tasks"
+            aria-label="Search tasks"
             class="w-full bg-white border border-gray-300 rounded-lg py-3 pl-4 pr-10 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
           />
           <div
