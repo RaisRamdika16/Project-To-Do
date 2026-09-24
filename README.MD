@@ -27,3 +27,11 @@ Landing Page → Home → Add To Do → Save Task → Task Detail
 Bookmark dan Profile dapat diakses melalui navigasi pada Home Page.
 
 ![description](asset/Landing.jpeg)
+![description](asset/Home.jpeg)
+![description](asset/Home 2.jpeg)
+![description](asset/Completed.jpeg)
+![description](asset/Edit.png)
+![description](asset/Detail.jpeg)
+![description](asset/Profile.jpeg)
+![description](asset/Bookmark.jpeg)
+![description](asset/Add.jpeg)
