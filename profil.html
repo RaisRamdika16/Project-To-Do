@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="./dist/output.css" rel="stylesheet" />
+    <link href="/dist/output.css" rel="stylesheet" />
     <title>Profile</title>
   </head>
   <body class="min-h-screen bg-white font-sans text-black">
@@ -68,7 +68,7 @@
                   id="firstName"
                   class="profile-input"
                   type="text"
-                  value="Riri"
+                  value=""
                   placeholder="First Name"
                 />
               </label>
@@ -79,7 +79,7 @@
                   id="lastName"
                   class="profile-input"
                   type="text"
-                  value="Ramdika"
+                  value=""
                   placeholder="Last Name"
                 />
               </label>
@@ -129,7 +129,7 @@
                   id="email"
                   class="profile-input"
                   type="email"
-                  value="ebwfiwbf@gmail.com"
+                  value=""
                   placeholder="Email"
                 />
               </label>
@@ -180,43 +180,6 @@
       }
     </style>
 
-    <script>
-      const profileForm = document.getElementById("profileForm");
-      const formActions = document.getElementById("formActions");
-      const cancelButton = document.getElementById("cancelButton");
-      const savedProfile = JSON.parse(
-        localStorage.getItem("profile") || "null",
-      );
-
-      if (savedProfile) {
-        document.getElementById("firstName").value =
-          savedProfile.firstName || "";
-        document.getElementById("lastName").value = savedProfile.lastName || "";
-        document.getElementById("birthDate").value =
-          savedProfile.birthDate || "";
-        document.getElementById("gender").value = savedProfile.gender || "";
-        document.getElementById("email").value = savedProfile.email || "";
-        formActions.remove();
-      }
-
-      profileForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        localStorage.setItem(
-          "profile",
-          JSON.stringify({
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            birthDate: document.getElementById("birthDate").value,
-            gender: document.getElementById("gender").value,
-            email: document.getElementById("email").value,
-          }),
-        );
-        formActions.remove();
-      });
-
-      cancelButton.addEventListener("click", () => {
-        window.location.href = "home.html";
-      });
-    </script>
+    <script src="./dist/script/index.js"></script>
   </body>
 </html>
