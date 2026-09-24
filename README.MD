@@ -28,7 +28,7 @@ Bookmark dan Profile dapat diakses melalui navigasi pada Home Page.
 
 ![description](asset/Landing.jpeg)
 ![description](asset/Home.jpeg)
-![description](asset/Home 2.jpeg)
+![description](asset/Home-2.jpeg)
 ![description](asset/Completed.jpeg)
 ![description](asset/Edit.png)
 ![description](asset/Detail.jpeg)
