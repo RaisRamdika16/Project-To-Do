@@ -25,3 +25,5 @@ Landing Page → Home → Add To Do → Save Task → Task Detail
 → Mark as Completed → Completed Task
 
 Bookmark dan Profile dapat diakses melalui navigasi pada Home Page.
+
+![description](asset/Landing.jpeg)
