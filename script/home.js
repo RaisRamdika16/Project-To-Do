@@ -22,7 +22,10 @@ function getFilteredTasks() {
 function renderTasks() {
   container.innerHTML = "";
 
-  const filteredTasks = getFilteredTasks();
+  const activeTasks = tasks
+    .map((task, index) => ({ task, index }))
+    .filter(({ task }) => !task.completed)
+    .reverse();
 
   if (filteredTasks.length === 0) {
     container.innerHTML = `
@@ -33,10 +36,7 @@ function renderTasks() {
     return;
   }
 
-  filteredTasks.forEach((task, index) => {
-    const realIndex = tasks.findIndex((item) => item === task);
-    const safeIndex = realIndex !== -1 ? realIndex : index;
-
+  activeTasks.forEach(({ task, index }) => {
     const taskItem = document.createElement("div");
     taskItem.className =
       "flex items-center justify-between border border-gray-300 rounded-lg px-4 py-3 bg-white shadow-xs";

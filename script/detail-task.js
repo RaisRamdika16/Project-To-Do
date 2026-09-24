@@ -91,7 +91,7 @@ if (!task) {
   descriptionEl.textContent =
     task.description || task.desc || "No description provided.";
   dateEl.textContent = task.date || task.dueDate || task.deadline || "-";
-  createdAtEl.textContent = task.createdAt || task.date || task.dueDate || "-";
+  createdAtEl.textContent = task.createdAt || task.created_at || "-";
   setPriorityBadge(task.priority || "medium");
   setStatusBadge(Boolean(task.completed));
 }
