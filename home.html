@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="./dist/output.css" rel="stylesheet" />
+    <link href="/src/output.css" rel="stylesheet" />
     <title>Todo List - Home</title>
   </head>
   <body
@@ -135,7 +135,7 @@
       </div>
 
       <!-- TASK LIST -->
-      <div id="taskListContainer" class="space-y-3 max-w-4xl overflow-y-auto">
+      <div id="taskListContainer" class="w-full space-y-3 overflow-y-auto">
         <p
           id="emptyState"
           class="text-gray-400 font-medium text-lg tracking-wide"
@@ -145,6 +145,9 @@
       </div>
     </main>
 
+<<<<<<< HEAD
+    <script src="/script/home.js"></script>
+=======
     <script>
       let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
       const container = document.getElementById("taskListContainer");
@@ -261,7 +264,9 @@
         });
       }
 
+
       renderTasks();
     </script>
+>>>>>>> 3f5303022c37b7f78302f89a1f8a6bc6223e3cbc
   </body>
 </html>
