@@ -4,105 +4,124 @@ const savedTaskIndex = Number.parseInt(
   localStorage.getItem("selectedTaskIndex"),
   10,
 );
+const editTaskIndex = Number.parseInt(
+  localStorage.getItem("editTaskIndex"),
+  10,
+);
 const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-const savedTask = JSON.parse(localStorage.getItem("selectedTask") || "null");
+const selectedTask = JSON.parse(localStorage.getItem("selectedTask") || "null");
+const editTask = JSON.parse(localStorage.getItem("editTask") || "null");
 
 const taskIndex = Number.isInteger(queryTaskIndex)
   ? queryTaskIndex
-  : savedTaskIndex;
+  : Number.isInteger(editTaskIndex)
+    ? editTaskIndex
+    : Number.isInteger(savedTaskIndex)
+      ? savedTaskIndex
+      : null;
 
-// Ambil data dari array tasks utama, jika gagal pakai fallback savedTask
 const task =
   Number.isInteger(taskIndex) && tasks[taskIndex]
     ? tasks[taskIndex]
-    : savedTask;
+    : editTask || selectedTask;
 
-const titleEl = document.getElementById("taskTitle");
-const descriptionEl = document.getElementById("taskDescription");
-const dateEl = document.getElementById("taskDate");
-const priorityEl = document.getElementById("taskPriority");
-const statusEl = document.getElementById("taskStatus");
-const createdAtEl = document.getElementById("taskCreatedAt");
-const completeButton = document.getElementById("completeButton");
-const deleteButton = document.getElementById("deleteButton");
+const form = document.getElementById("editTaskForm");
+const nameInput = document.getElementById("taskName");
+const descriptionInput = document.getElementById("taskDescription");
+const priorityInput = document.getElementById("taskPriority");
+const dateInput = document.getElementById("taskDate");
+const statusInput = document.getElementById("taskStatus");
+const createdAtInput = document.getElementById("taskCreatedAt");
 
-function setPriorityBadge(value) {
-  const normalized = (value || "medium").toLowerCase();
-  let classes =
-    "inline-flex items-center px-3 py-1 rounded-sm text-sm font-semibold ";
+function toISODate(value) {
+  if (!value) return "";
 
-  if (normalized === "low") {
-    classes += "bg-green-100 text-green-700";
-  } else if (normalized === "high") {
-    classes += "bg-red-100 text-red-700";
-  } else {
-    classes += "bg-yellow-200 text-yellow-800";
+  const parsedDate = new Date(value);
+  if (Number.isNaN(parsedDate.getTime())) {
+    return "";
   }
 
-  const label = value
-    ? value.charAt(0).toUpperCase() + value.slice(1)
-    : "Medium";
-  priorityEl.innerHTML = `<span class="${classes}">${label}</span>`;
+  const timezoneOffset = parsedDate.getTimezoneOffset();
+  const localDate = new Date(parsedDate.getTime() - timezoneOffset * 60 * 1000);
+  return localDate.toISOString().split("T")[0];
 }
 
-function setStatusBadge(completed) {
-  if (completed) {
-    statusEl.innerHTML =
-      '<span class="inline-flex items-center px-3 py-1 rounded-sm text-sm font-semibold bg-green-100 text-green-700">Completed</span>';
-    completeButton.textContent = "Completed";
-    completeButton.disabled = true;
-    completeButton.classList.add("opacity-80", "cursor-not-allowed");
-    completeButton.classList.remove("hover:bg-blue-600");
-  } else {
-    statusEl.innerHTML =
-      '<span class="inline-flex items-center px-3 py-1 rounded-sm text-sm font-semibold bg-blue-100 text-blue-700">In Progress</span>';
-    completeButton.textContent = "Mark as Completed";
-    completeButton.disabled = false;
-    completeButton.classList.remove("opacity-80", "cursor-not-allowed");
-    completeButton.classList.add("hover:bg-blue-600");
+function formatDateForDisplay(value) {
+  if (!value) return "Today";
+
+  const parsedDate = new Date(value);
+  if (Number.isNaN(parsedDate.getTime())) {
+    return value;
   }
+
+  return parsedDate.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function populateForm(taskData) {
+  if (!taskData) return;
+
+  nameInput.value = taskData.name || taskData.title || taskData.taskName || "";
+  descriptionInput.value = taskData.description || taskData.desc || "";
+  priorityInput.value = (taskData.priority || "medium").toLowerCase();
+  dateInput.value = toISODate(
+    taskData.date || taskData.dueDate || taskData.deadline || "",
+  );
+  statusInput.value = taskData.completed ? "completed" : "in-progress";
+  createdAtInput.value = toISODate(
+    taskData.createdAt ||
+      taskData.created_at ||
+      taskData.date ||
+      new Date().toISOString(),
+  );
 }
 
 if (!task) {
-  titleEl.textContent = "Task not found";
-  descriptionEl.textContent = "This task could not be loaded.";
-  dateEl.textContent = "-";
-  createdAtEl.textContent = "-";
-  setPriorityBadge("medium");
-  setStatusBadge(false);
-  completeButton.disabled = true;
+  nameInput.value = "";
+  descriptionInput.value = "";
+  priorityInput.value = "medium";
+  dateInput.value = "";
+  statusInput.value = "in-progress";
+  createdAtInput.value = toISODate(new Date().toISOString());
 } else {
-  // Fallback lengkap untuk menangani berbagai alternatif nama property
-  titleEl.textContent =
-    task.name || task.title || task.taskName || "Untitled Task";
-  descriptionEl.textContent =
-    task.description || task.desc || "No description provided.";
-  dateEl.textContent = task.date || task.dueDate || task.deadline || "-";
-  createdAtEl.textContent = task.createdAt || task.date || task.dueDate || "-";
-  setPriorityBadge(task.priority || "medium");
-  setStatusBadge(Boolean(task.completed));
+  populateForm(task);
 }
 
-// Handler Tombol Completed yang langsung mengupdate Array LocalStorage utama
-completeButton.addEventListener("click", () => {
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const updatedTask = {
+    ...(task || {}),
+    name: nameInput.value.trim() || "Untitled Task",
+    description: descriptionInput.value.trim(),
+    priority: priorityInput.value || "medium",
+    date: dateInput.value ? formatDateForDisplay(dateInput.value) : "Today",
+    completed: statusInput.value === "completed",
+    createdAt: createdAtInput.value
+      ? formatDateForDisplay(createdAtInput.value)
+      : task?.createdAt || "Today",
+  };
+
   if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
-    tasks[taskIndex].completed = true;
+    tasks[taskIndex] = updatedTask;
     localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
-  if (task) {
-    task.completed = true;
+  } else if (task) {
+    Object.assign(task, updatedTask);
     localStorage.setItem("selectedTask", JSON.stringify(task));
   }
-  setStatusBadge(true);
-});
 
-// Handler Tombol Delete di Halaman Detail
-deleteButton.addEventListener("click", () => {
+  localStorage.setItem("selectedTask", JSON.stringify(updatedTask));
+  localStorage.setItem("selectedTaskIndex", String(taskIndex ?? 0));
+  localStorage.removeItem("editTask");
+  localStorage.removeItem("editTaskIndex");
+
   if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
-    tasks.splice(taskIndex, 1);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    localStorage.removeItem("selectedTask");
-    localStorage.removeItem("selectedTaskIndex");
     window.location.href = "home.html";
+    return;
   }
+
+  window.location.href = "home.html";
 });

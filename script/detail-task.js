@@ -1,4 +1,4 @@
-const params = new URLSearchParams(window.location.search);
+﻿const params = new URLSearchParams(window.location.search);
 const queryTaskIndex = Number.parseInt(params.get("id"), 10);
 const savedTaskIndex = Number.parseInt(
   localStorage.getItem("selectedTaskIndex"),
@@ -11,7 +11,6 @@ const taskIndex = Number.isInteger(queryTaskIndex)
   ? queryTaskIndex
   : savedTaskIndex;
 
-// Ambil data dari array tasks utama, jika gagal pakai fallback savedTask
 const task =
   Number.isInteger(taskIndex) && tasks[taskIndex]
     ? tasks[taskIndex]
@@ -25,6 +24,21 @@ const statusEl = document.getElementById("taskStatus");
 const createdAtEl = document.getElementById("taskCreatedAt");
 const completeButton = document.getElementById("completeButton");
 const deleteButton = document.getElementById("deleteButton");
+const editButton = document.getElementById("editButton");
+
+if (completeButton) {
+  completeButton.addEventListener("click", () => {
+    if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
+      tasks[taskIndex].completed = true;
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+    if (task) {
+      task.completed = true;
+      localStorage.setItem("selectedTask", JSON.stringify(task));
+    }
+    setStatusBadge(true);
+  });
+}
 
 function setPriorityBadge(value) {
   const normalized = (value || "medium").toLowerCase();
@@ -72,7 +86,6 @@ if (!task) {
   setStatusBadge(false);
   completeButton.disabled = true;
 } else {
-  // Fallback lengkap untuk menangani berbagai alternatif nama property
   titleEl.textContent =
     task.name || task.title || task.taskName || "Untitled Task";
   descriptionEl.textContent =
@@ -83,20 +96,6 @@ if (!task) {
   setStatusBadge(Boolean(task.completed));
 }
 
-// Handler Tombol Completed yang langsung mengupdate Array LocalStorage utama
-completeButton.addEventListener("click", () => {
-  if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
-    tasks[taskIndex].completed = true;
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
-  if (task) {
-    task.completed = true;
-    localStorage.setItem("selectedTask", JSON.stringify(task));
-  }
-  setStatusBadge(true);
-});
-
-// Handler Tombol Delete di Halaman Detail
 deleteButton.addEventListener("click", () => {
   if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
     tasks.splice(taskIndex, 1);
@@ -104,5 +103,13 @@ deleteButton.addEventListener("click", () => {
     localStorage.removeItem("selectedTask");
     localStorage.removeItem("selectedTaskIndex");
     window.location.href = "home.html";
+  }
+});
+
+editButton.addEventListener("click", () => {
+  if (task) {
+    localStorage.setItem("editTask", JSON.stringify(task));
+    localStorage.setItem("editTaskIndex", String(taskIndex ?? 0));
+    window.location.href = `edit-task.html${Number.isInteger(taskIndex) ? `?id=${taskIndex}` : ""}`;
   }
 });
