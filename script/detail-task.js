@@ -90,13 +90,19 @@ if (!task) {
     task.name || task.title || task.taskName || "Untitled Task";
   descriptionEl.textContent =
     task.description || task.desc || "No description provided.";
-  dateEl.textContent = task.date || task.dueDate || task.deadline || "-";
-  createdAtEl.textContent = task.createdAt || task.created_at || "-";
+  dateEl.textContent =
+    task.due_date || task.date || task.dueDate || task.deadline || "-";
+  createdAtEl.textContent = task.created_at || task.createdAt || "-";
   setPriorityBadge(task.priority || "medium");
   setStatusBadge(Boolean(task.completed));
 }
 
 deleteButton.addEventListener("click", () => {
+  const shouldDelete = window.confirm(
+    "Apakah kamu yakin ingin menghapus todo list ini?",
+  );
+  if (!shouldDelete) return;
+
   if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
     tasks.splice(taskIndex, 1);
     localStorage.setItem("tasks", JSON.stringify(tasks));

@@ -14,12 +14,12 @@ document.getElementById("taskForm").addEventListener("submit", function (e) {
   });
 
   // Format tanggal (misal: "20 Aug 2026") agar mirip desainmu
-  let formattedDate = "Today";
+  let formattedDueDate = "Today";
   if (dateVal) {
     const [year, month, day] = dateVal.split("-").map(Number);
     const d = new Date(year, month - 1, day);
     const options = { day: "numeric", month: "short", year: "numeric" };
-    formattedDate = d.toLocaleDateString("en-GB", options);
+    formattedDueDate = d.toLocaleDateString("en-GB", options);
   }
 
   // Ambil data task aktif lama dari localStorage (kalau ada)
@@ -30,7 +30,10 @@ document.getElementById("taskForm").addEventListener("submit", function (e) {
     name: name,
     description: desc,
     priority: priority,
-    date: formattedDate,
+    due_date: formattedDueDate,
+    created_at: createdAt,
+    // Alias dipertahankan agar task lama tetap kompatibel.
+    date: formattedDueDate,
     createdAt: createdAt,
     completed: false,
     bookmarked: false,

@@ -85,11 +85,15 @@ function populateForm(taskData) {
   descriptionInput.value = taskData.description || taskData.desc || "";
   priorityInput.value = (taskData.priority || "medium").toLowerCase();
   dateInput.value = toISODate(
-    taskData.date || taskData.dueDate || taskData.deadline || "",
+    taskData.due_date ||
+      taskData.date ||
+      taskData.dueDate ||
+      taskData.deadline ||
+      "",
   );
   statusInput.value = taskData.completed ? "completed" : "in-progress";
   createdAtInput.value = toISODate(
-    taskData.createdAt || taskData.created_at || getTodayAsISODate(),
+    taskData.created_at || taskData.createdAt || getTodayAsISODate(),
   );
 }
 
@@ -112,12 +116,16 @@ form.addEventListener("submit", (event) => {
     name: nameInput.value.trim() || "Untitled Task",
     description: descriptionInput.value.trim(),
     priority: priorityInput.value || "medium",
-    date: dateInput.value ? formatDateForDisplay(dateInput.value) : "Today",
+    due_date: dateInput.value ? formatDateForDisplay(dateInput.value) : "Today",
     completed: statusInput.value === "completed",
-    createdAt: createdAtInput.value
-      ? formatDateForDisplay(createdAtInput.value)
-      : task?.createdAt || formatDateForDisplay(getTodayAsISODate()),
+    created_at:
+      task?.created_at ||
+      task?.createdAt ||
+      formatDateForDisplay(getTodayAsISODate()),
   };
+
+  updatedTask.date = updatedTask.due_date;
+  updatedTask.createdAt = updatedTask.created_at;
 
   if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
     tasks[taskIndex] = updatedTask;

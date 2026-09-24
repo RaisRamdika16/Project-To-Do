@@ -60,7 +60,8 @@ function renderTasks() {
 
     const taskDate = document.createElement("span");
     taskDate.className = "text-xs text-gray-400 whitespace-nowrap";
-    taskDate.textContent = task.date || "Today";
+    taskDate.textContent =
+      task.due_date || task.date || task.dueDate || "Today";
 
     // Susun elemen DOM
     taskInfo.append(bookmarkButton, taskName);

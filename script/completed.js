@@ -53,7 +53,7 @@ function renderTasks() {
 
     const taskDate = document.createElement("span");
     taskDate.className = "text-xs text-gray-400";
-    taskDate.textContent = task.date;
+    taskDate.textContent = task.due_date || task.date || task.dueDate || "";
 
     const bookmarkButton = document.createElement("button");
     bookmarkButton.type = "button";
@@ -87,6 +87,11 @@ function renderTasks() {
 
     deleteButton.addEventListener("click", (event) => {
       event.stopPropagation();
+      const shouldDelete = window.confirm(
+        "Apakah kamu yakin ingin menghapus todo list ini?",
+      );
+      if (!shouldDelete) return;
+
       tasks.splice(index, 1);
       localStorage.setItem("tasks", JSON.stringify(tasks));
       renderTasks();

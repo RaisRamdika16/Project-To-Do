@@ -7,9 +7,11 @@
     <title>Todo List - Edit Task</title>
   </head>
   <body
-    class="bg-[#f2f2f2] h-screen w-screen overflow-hidden font-sans antialiased flex flex-col"
+    class="bg-[#f2f2f2] min-h-screen w-full overflow-y-auto font-sans antialiased flex flex-col"
   >
-    <header class="w-full bg-white border-b border-gray-200 h-20 shrink-0">
+    <header
+      class="sticky top-0 w-full bg-white border-b border-gray-200 h-20 shrink-0 z-50"
+    >
       <div
         class="max-w-6xl mx-auto px-6 h-full flex items-center justify-between"
       >
@@ -168,6 +170,7 @@
             <input
               id="taskCreatedAt"
               type="date"
+              disabled
               class="w-full bg-white border border-gray-300 rounded-lg p-3.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
             />
           </div>
