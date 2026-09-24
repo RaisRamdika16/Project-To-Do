@@ -5,16 +5,17 @@ const emptyState = document.getElementById("emptyState");
 function renderTasks() {
   container.innerHTML = "";
 
-  const activeTasks = tasks.filter((task) => !task.completed);
+  const activeTasks = tasks
+    .map((task, index) => ({ task, index }))
+    .filter(({ task }) => !task.completed)
+    .reverse();
 
   if (activeTasks.length === 0) {
     container.appendChild(emptyState);
     return;
   }
 
-  tasks.forEach((task, index) => {
-    if (task.completed) return;
-
+  activeTasks.forEach(({ task, index }) => {
     const taskItem = document.createElement("div");
     taskItem.className =
       "flex items-center justify-between border border-gray-300 rounded-lg px-4 py-3 bg-white shadow-xs";

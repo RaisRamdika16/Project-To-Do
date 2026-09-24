@@ -6,10 +6,18 @@ document.getElementById("taskForm").addEventListener("submit", function (e) {
   const priority = document.getElementById("taskPriority").value;
   let dateVal = document.getElementById("taskDate").value;
 
+  const today = new Date();
+  const createdAt = today.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+
   // Format tanggal (misal: "20 Aug 2026") agar mirip desainmu
   let formattedDate = "Today";
   if (dateVal) {
-    const d = new Date(dateVal);
+    const [year, month, day] = dateVal.split("-").map(Number);
+    const d = new Date(year, month - 1, day);
     const options = { day: "numeric", month: "short", year: "numeric" };
     formattedDate = d.toLocaleDateString("en-GB", options);
   }
@@ -23,6 +31,7 @@ document.getElementById("taskForm").addEventListener("submit", function (e) {
     description: desc,
     priority: priority,
     date: formattedDate,
+    createdAt: createdAt,
     completed: false,
     bookmarked: false,
   });

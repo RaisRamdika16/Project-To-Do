@@ -36,6 +36,9 @@ const createdAtInput = document.getElementById("taskCreatedAt");
 function toISODate(value) {
   if (!value) return "";
 
+  const dateOnlyMatch = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (dateOnlyMatch) return value;
+
   const parsedDate = new Date(value);
   if (Number.isNaN(parsedDate.getTime())) {
     return "";
@@ -46,10 +49,24 @@ function toISODate(value) {
   return localDate.toISOString().split("T")[0];
 }
 
+function getTodayAsISODate() {
+  const today = new Date();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${today.getFullYear()}-${month}-${day}`;
+}
+
 function formatDateForDisplay(value) {
   if (!value) return "Today";
 
-  const parsedDate = new Date(value);
+  const dateOnlyMatch = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const parsedDate = dateOnlyMatch
+    ? new Date(
+        Number(dateOnlyMatch[1]),
+        Number(dateOnlyMatch[2]) - 1,
+        Number(dateOnlyMatch[3]),
+      )
+    : new Date(value);
   if (Number.isNaN(parsedDate.getTime())) {
     return value;
   }
@@ -72,10 +89,7 @@ function populateForm(taskData) {
   );
   statusInput.value = taskData.completed ? "completed" : "in-progress";
   createdAtInput.value = toISODate(
-    taskData.createdAt ||
-      taskData.created_at ||
-      taskData.date ||
-      new Date().toISOString(),
+    taskData.createdAt || taskData.created_at || getTodayAsISODate(),
   );
 }
 
@@ -85,7 +99,7 @@ if (!task) {
   priorityInput.value = "medium";
   dateInput.value = "";
   statusInput.value = "in-progress";
-  createdAtInput.value = toISODate(new Date().toISOString());
+  createdAtInput.value = getTodayAsISODate();
 } else {
   populateForm(task);
 }
@@ -102,7 +116,7 @@ form.addEventListener("submit", (event) => {
     completed: statusInput.value === "completed",
     createdAt: createdAtInput.value
       ? formatDateForDisplay(createdAtInput.value)
-      : task?.createdAt || "Today",
+      : task?.createdAt || formatDateForDisplay(getTodayAsISODate()),
   };
 
   if (Number.isInteger(taskIndex) && tasks[taskIndex]) {
